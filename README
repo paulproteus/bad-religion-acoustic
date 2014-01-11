@@ -1,0 +1,10 @@
+To use this, run:
+
+./get_videos.sh
+
+./script.sh
+
+Then make sure you have 'gmsync.py', and 'cd' into its
+directory, and do:
+
+./gmsync.py $PATH_TO_THIS_DIR
