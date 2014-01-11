@@ -2,15 +2,17 @@ rm *temp-*m4a
 
 for thing in *.m4a
 do
-AtomicParsley "$thing" -W \
---artist 'The Gregory Brothers' \
---album "Auto-Tune the News" \
---track "$(echo "$thing" | egrep -o '[0-9]+ ' | head -n1 | xargs printf "%d")"/$(ls -1 *.m4a | wc -l) \
---title "$(echo "$thing" | egrep -o ' - (.*).m4a' | sed -r s'/\.-[a-zA-Z0-9]+\.m4a$//' | sed -r s/'^ - '//)"
-done
+artist=$(echo "$thing" | awk -F--- '{print $1}')
+album=$(echo "$thing" | awk -F--- '{print $2}')
+track=$(echo "$thing" | awk -F--- '{print $3}' | sed -r 's/^\s+0*//' | xargs -n1 printf '%d\n')
+title=$(echo "$thing" | awk -F--- '{print $4}' | sed 's/[.]m4a$//')
 
-# Un-tempfile-ify
-for thing in *temp*
-do
-mv "$thing" "$(echo -n "$thing" | sed -r 's/-temp-[0-9]+.m4a//' | xargs -0 -n1 printf "%s.m4a\n")"
+# Title fixup
+title=$(echo "$title" | sed 's/Bad Religion - //')
+
+echo "Artist $artist"
+echo "Album $album"
+echo "Track $track"
+echo "Title $title"
+
 done
