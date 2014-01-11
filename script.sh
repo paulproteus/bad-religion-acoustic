@@ -1,11 +1,17 @@
+#!/bin/bash
 rm *temp-*m4a
+
+function trim() {
+    sed -e 's/^ *//g' -e 's/ *$//g'
+}
+
 
 for thing in *.m4a
 do
-artist=$(echo "$thing" | awk -F--- '{print $1}')
-album=$(echo "$thing" | awk -F--- '{print $2}')
-track=$(echo "$thing" | awk -F--- '{print $3}' | sed -r 's/^\s+0*//' | xargs -n1 printf '%d\n')
-title=$(echo "$thing" | awk -F--- '{print $4}' | sed 's/[.]m4a$//')
+artist=$(echo "$thing" | awk -F--- '{print $1}' | trim)
+album=$(echo "$thing" | awk -F--- '{print $2}' | trim)
+track=$(echo "$thing" | awk -F--- '{print $3}' | trim | sed -r 's/^0*//' | xargs -n1 printf '%d\n')
+title=$(echo "$thing" | awk -F--- '{print $4}' | trim | sed 's/[.]m4a$//')
 
 # Title fixup
 title=$(echo "$title" | sed 's/Bad Religion - //')
