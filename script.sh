@@ -15,4 +15,15 @@ echo "Album $album"
 echo "Track $track"
 echo "Title $title"
 
+AtomicParsley "$thing" -W \
+--artist "$artist" \
+--album "$album" \
+--track "$track" \
+--title "$title"
+done
+
+# Un-tempfile-ify
+for thing in *temp*
+do
+mv "$thing" "$(echo -n "$thing" | sed -r 's/-temp-[0-9]+.m4a//' | xargs -0 -n1 printf "%s.m4a\n")"
 done
